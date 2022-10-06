@@ -1,0 +1,7 @@
+tests/
+.env*
+.gitignore
+LICENSE
+Makefile
+poetry.*
+README.md
