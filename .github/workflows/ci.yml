@@ -20,4 +20,5 @@ jobs:
         run: sudo ./ci/install_rclone.bash
 
       - run: poetry install
+      - run: make codestyle
       - run: poetry run pytest
