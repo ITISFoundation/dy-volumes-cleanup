@@ -113,7 +113,7 @@ async def used_volume(
             }
         )
 
-        container = await docker_client.containers.create_or_replace(
+        container = await docker_client.containers.run(
             config={
                 "Cmd": ["/bin/ash", "-c", "sleep 10000"],
                 "Image": "alpine:latest",
