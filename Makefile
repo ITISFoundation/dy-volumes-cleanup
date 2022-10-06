@@ -19,7 +19,7 @@ dev-run:	# runs in devel mode
 
 .PHONY: codestyle
 codestyle:	# runs codestyle enforcement
-	isort .
-	black .
-	pylint dy_volumes_cleanup tests
+	poetry run isort .
+	poetry run black .
+	poetry run pylint dy_volumes_cleanup tests
 
