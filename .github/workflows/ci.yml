@@ -17,6 +17,7 @@ jobs:
         uses: snok/install-poetry@v1
 
       - name: Install rclone
-        uses: ./ci/install_rclone.bash
+        run: sudo ./ci/github/helpers/install_rclone.bash
+
       - run: poetry install
       - run: poetry run pytest
