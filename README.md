@@ -11,6 +11,14 @@ docker run --rm \
     itisfoundation/dy-volumes-cleanup dyvc ${S3_ENDPOINT} ${S3_ACCESS_KEY} ${S3_SECRET_KEY} ${S3_BUCKET} ${S3_PROVIDER} --s3-region ${S3_REGION}
 ```
 
+#### About volume mounts:
+
+The `docker.sock` is required
+
+The `/var/lib/docker/volumes/` refers to where the docker volumes data is currently stored. And the same path
+should be mounted inside the container.
+If the docker data is in `/docker` the mount will change to `--volume /docker/volumes/:/docker/volumes/`.
+
 
 ### For more details details run 
 
