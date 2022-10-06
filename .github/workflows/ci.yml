@@ -1,4 +1,4 @@
-name: Build and check image
+name: Test and publish
 
 on: push
 
@@ -16,5 +16,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Install rclone
+        uses: ./ci/install_rclone.bash
       - run: poetry install
       - run: poetry run pytest
