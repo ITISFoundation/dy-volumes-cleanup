@@ -4,16 +4,10 @@ on:
   push:
     branches:
       - "main"
-  workflow_run:
-    workflows: ["Test"]
-    branches: [main]
-    types:
-      - completed
 
 jobs:
   docker:
     runs-on: ubuntu-20.04
-    needs: ["Test"]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
