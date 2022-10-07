@@ -1,5 +1,6 @@
-# pylint: disable=missing-module-docstring,missing-function-docstring,too-many-arguments,
-# pylint: disable=redefined-outer-name,unused-argument,too-many-locals
+# pylint: disable=redefined-outer-name
+# pylint: disable=unused-argument
+# pylint: disable=too-many-locals
 
 import hashlib
 from pathlib import Path

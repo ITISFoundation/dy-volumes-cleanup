@@ -1,5 +1,3 @@
-# pylint: disable=missing-module-docstring,missing-function-docstring,too-many-arguments
-
 from collections import deque
 from contextlib import asynccontextmanager
 from typing import AsyncIterator, Final

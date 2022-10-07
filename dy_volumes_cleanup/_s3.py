@@ -1,5 +1,3 @@
-# pylint: disable=missing-module-docstring,missing-function-docstring,too-many-arguments,missing-class-docstring
-
 import asyncio
 import logging
 from enum import Enum

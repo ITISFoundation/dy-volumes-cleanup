@@ -1,5 +1,5 @@
-# pylint: disable=missing-module-docstring,missing-function-docstring,too-many-arguments,
-# pylint: disable=redefined-outer-name,unused-argument
+# pylint: disable=redefined-outer-name
+# pylint: disable=unused-argument
 
 import os
 import traceback

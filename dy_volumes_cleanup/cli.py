@@ -1,5 +1,3 @@
-# pylint: disable=missing-module-docstring,missing-function-docstring,too-many-arguments
-
 import asyncio
 import logging
 
