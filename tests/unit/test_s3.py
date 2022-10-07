@@ -15,7 +15,9 @@ from dy_volumes_cleanup.cli import FILES_TO_EXCLUDE
 # UTILS
 
 
-def _get_file_hashes_in_path(path_to_hash: Path) -> set[tuple[Path, str]]:
+def _get_file_hashes_in_path(
+    path_to_hash: Path, exclude_files: set[Path] = set()
+) -> set[tuple[Path, str]]:
     def _hash_path(path: Path):
         sha256_hash = hashlib.sha256()
         with open(path, "rb") as file:  # pylint:disable=unspecified-encoding
@@ -32,8 +34,8 @@ def _get_file_hashes_in_path(path_to_hash: Path) -> set[tuple[Path, str]]:
 
     return {
         (_relative_path(path_to_hash, path), _hash_path(path))
-        for path in path_to_hash.rglob("*.txt")
-        if path.is_file()
+        for path in path_to_hash.rglob("*")
+        if path.is_file() and _relative_path(path_to_hash, path) not in exclude_files
     }
 
 
@@ -150,7 +152,9 @@ async def test_store_to_s3(
         run_id=run_id,
     )
 
-    hashes_on_disk = _get_file_hashes_in_path(unused_volume_path)
+    hashes_on_disk = _get_file_hashes_in_path(
+        unused_volume_path, set(map(Path, FILES_TO_EXCLUDE))
+    )
     hashes_in_s3 = _get_file_hashes_in_path(save_to)
     assert len(hashes_on_disk) > 0
     assert len(hashes_in_s3) > 0
