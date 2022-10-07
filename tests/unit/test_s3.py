@@ -4,6 +4,7 @@
 
 import hashlib
 from pathlib import Path
+from typing import Optional
 
 import aioboto3
 import pytest
@@ -16,7 +17,7 @@ from dy_volumes_cleanup.cli import FILES_TO_EXCLUDE
 
 
 def _get_file_hashes_in_path(
-    path_to_hash: Path, exclude_files: set[Path] = set()
+    path_to_hash: Path, exclude_files: Optional[set[Path]] = None
 ) -> set[tuple[Path, str]]:
     def _hash_path(path: Path):
         sha256_hash = hashlib.sha256()
@@ -31,6 +32,9 @@ def _get_file_hashes_in_path(
 
     if path_to_hash.is_file():
         return {(_relative_path(path_to_hash, path_to_hash), _hash_path(path_to_hash))}
+
+    if exclude_files is None:
+        exclude_files = set()
 
     return {
         (_relative_path(path_to_hash, path), _hash_path(path))
