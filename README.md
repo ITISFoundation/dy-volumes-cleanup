@@ -5,7 +5,7 @@ Tool for backing up and removing docker volumes starting with `dyv_`.
 ### Usage
 
 ```bash
-docker run --rm \
+docker run --rm --pull always \
     --volume /var/lib/docker/volumes/:/var/lib/docker/volumes/ \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     itisfoundation/osparc-ops-dy-volumes-cleanup dyvc ${S3_ENDPOINT} ${S3_ACCESS_KEY} ${S3_SECRET_KEY} ${S3_BUCKET} ${S3_PROVIDER} --s3-region ${S3_REGION}
