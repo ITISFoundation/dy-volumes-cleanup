@@ -79,5 +79,5 @@ def test_workflow(
         ],
     )
     assert result.exit_code == os.EX_OK, _format_cli_error(result)
-    assert f"Removed volume: '{unused_volume_name}'" in result.stdout
-    assert f"Skipped in use volume: '{used_volume_name}'" in result.stdout
+    assert f"Removed docker volume: '{unused_volume_name}'" in result.stdout
+    assert f"Skipped in use docker volume: '{used_volume_name}'" in result.stdout

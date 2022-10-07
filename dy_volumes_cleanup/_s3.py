@@ -3,11 +3,7 @@ import logging
 from enum import Enum
 from pathlib import Path
 
-from tenacity import TryAgain
-from tenacity._asyncio import AsyncRetrying
-from tenacity.before_sleep import before_sleep_log
-from tenacity.stop import stop_after_attempt
-from tenacity.wait import wait_random_exponential
+import typer
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +57,7 @@ def _get_s3_path(s3_bucket: str, labels: dict[str, str]) -> Path:
     return Path(f"/{joint_key}")
 
 
-async def store_to_s3(
+async def store_to_s3(  # pylint:disable=too-many-locals
     dyv_volume: dict,
     s3_endpoint: str,
     s3_access_key: str,
@@ -69,6 +65,9 @@ async def store_to_s3(
     s3_bucket: str,
     s3_region: str,
     s3_provider: S3Provider,
+    s3_retries: int,
+    s3_parallelism: int,
+    exclude_files: list[str],
 ) -> None:
     config_file_path = get_config_file_path(
         s3_endpoint=s3_endpoint,
@@ -88,39 +87,32 @@ async def store_to_s3(
         "--low-level-retries",
         "3",
         "--retries",
-        "3",
+        f"{s3_retries}",
         "--transfers",
-        "5",
+        f"{s3_parallelism}",
         "sync",
         f"{source_dir}",
         f"dst:{s3_path}",
         "-P",
-        # ignore files
-        "--exclude",
-        ".hidden_do_not_remove",
-        "--exclude",
-        "key_values.json",
     ]
+    # ignore files
+    for to_exclude in exclude_files:
+        r_clone_command.append("--exclude")
+        r_clone_command.append(to_exclude)
+
     str_r_clone_command = " ".join(r_clone_command)
-    print(r_clone_command)
+    typer.echo(r_clone_command)
 
-    async for attempt in AsyncRetrying(
-        wait=wait_random_exponential(),
-        stop=stop_after_attempt(3),
-        before_sleep=before_sleep_log(logger, logging.WARNING),
-        reraise=True,
-    ):
-        with attempt:
-            process = await asyncio.create_subprocess_shell(
-                str_r_clone_command,
-                stdin=asyncio.subprocess.PIPE,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.STDOUT,
-            )
-            stdout, _ = await process.communicate()
+    process = await asyncio.create_subprocess_shell(
+        str_r_clone_command,
+        stdin=asyncio.subprocess.PIPE,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.STDOUT,
+    )
+    stdout, _ = await process.communicate()
 
-            if process.returncode != 0:
-                logger.warning(
-                    "Could not finish\n%s\n%s", str_r_clone_command, stdout.decode()
-                )
-                raise TryAgain()
+    if process.returncode != 0:
+        raise RuntimeError(
+            f"Shell subprocesses yielded nonzero error code {process.returncode} "
+            f" for command {str_r_clone_command}\n{stdout.decode()}"
+        )

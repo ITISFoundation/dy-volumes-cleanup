@@ -10,6 +10,7 @@ import pytest
 from aiodocker.volumes import DockerVolume
 
 from dy_volumes_cleanup._s3 import S3Provider, _get_s3_path, store_to_s3
+from dy_volumes_cleanup.cli import FILES_TO_EXCLUDE
 
 # UTILS
 
@@ -132,6 +133,9 @@ async def test_store_to_s3(
         s3_endpoint=minio["endpoint"],
         s3_region="us-east-1",
         s3_provider=S3Provider.MINIO,
+        s3_parallelism=3,
+        s3_retries=1,
+        exclude_files=FILES_TO_EXCLUDE,
     )
 
     await _download_files_from_bucket(
