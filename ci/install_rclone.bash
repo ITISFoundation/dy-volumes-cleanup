@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#  Installs the latest version of rclone plugin
+#  Installs a specific version (see $R_CLONE_VERSION) of rclone plugin
 #
 
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
