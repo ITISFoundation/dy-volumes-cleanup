@@ -32,10 +32,7 @@ async def async_entrypoint(
         if len(dyv_volumes) == 0:
             return
 
-        typer.echo(
-            f"The dy-sidecar volume cleanup detected {len(dyv_volumes)} "
-            "zombie volumes on the current machine."
-        )
+        numberOfCleanedUpZombies = 0
         typer.echo("Beginning cleanup.")
         for dyv_volume in dyv_volumes:
             volume_name = dyv_volume["Name"]
@@ -63,7 +60,12 @@ async def async_entrypoint(
 
             await delete_volume(client, volume_name)
             typer.echo(f"Removed docker volume: '{volume_name}'")
-
+            numberOfCleanedUpZombies = numberOfCleanedUpZombies + 1
+        
+        typer.echo(
+            f"The dy-sidecar volume cleanup detected {numberOfCleanedUpZombies} "
+            "zombie volumes on the current machine."
+        )
 
 app = typer.Typer()
 
