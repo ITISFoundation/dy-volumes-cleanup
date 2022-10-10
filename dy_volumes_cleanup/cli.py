@@ -60,7 +60,7 @@ async def async_entrypoint(
 
             await delete_volume(client, volume_name)
             typer.echo(f"Removed docker volume: '{volume_name}'")
-            numberOfCleanedUpZombies = numberOfCleanedUpZombies + 1
+            cleaned_up_volumes_count += 1
         
         typer.echo(
             f"The dy-sidecar volume cleanup detected {numberOfCleanedUpZombies} "
