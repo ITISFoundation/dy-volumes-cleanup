@@ -62,10 +62,13 @@ async def async_entrypoint(
             typer.echo(f"Removed docker volume: '{volume_name}'")
             cleaned_up_volumes_count += 1
         
-        typer.echo(
-            f"The dy-sidecar volume cleanup detected {cleaned_up_volumes_count} "
-            "zombie volumes on the current machine."
-        )
+        if cleaned_up_volumes_count > 0:
+            typer.echo(
+                f"The dy-sidecar volume cleanup detected {cleaned_up_volumes_count} "
+                "zombie volumes on the current machine."
+            )
+        else:
+            typer.echo("Found no zombie dy-sidecar volumes to cleanup.")
 
 app = typer.Typer()
 
