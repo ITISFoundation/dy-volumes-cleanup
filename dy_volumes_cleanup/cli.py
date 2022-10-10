@@ -32,7 +32,7 @@ async def async_entrypoint(
         if len(dyv_volumes) == 0:
             return
 
-        numberOfCleanedUpZombies = 0
+        cleaned_up_volumes_count = 0
         typer.echo("Beginning cleanup.")
         for dyv_volume in dyv_volumes:
             volume_name = dyv_volume["Name"]
