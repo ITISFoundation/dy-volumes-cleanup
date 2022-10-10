@@ -63,7 +63,7 @@ async def async_entrypoint(
             cleaned_up_volumes_count += 1
         
         typer.echo(
-            f"The dy-sidecar volume cleanup detected {numberOfCleanedUpZombies} "
+            f"The dy-sidecar volume cleanup detected {cleaned_up_volumes_count} "
             "zombie volumes on the current machine."
         )
 
