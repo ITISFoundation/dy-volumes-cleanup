@@ -31,9 +31,12 @@ async def async_entrypoint(
 
         if len(dyv_volumes) == 0:
             return
-        
-        typer.echo(f"The dy-sidecar volume cleanup detected {len(dyv_volumes)} zombie volumes on the current machine.")
-        typer.echo(f"Beginning cleanup.")
+
+        typer.echo(
+            f"The dy-sidecar volume cleanup detected {len(dyv_volumes)} "
+            "zombie volumes on the current machine."
+        )
+        typer.echo("Beginning cleanup.")
         for dyv_volume in dyv_volumes:
             volume_name = dyv_volume["Name"]
 
@@ -53,7 +56,10 @@ async def async_entrypoint(
                 s3_parallelism=s3_parallelism,
                 exclude_files=exclude_files,
             )
-            typer.echo(f"Succesfully pushed data to S3 for zombie dynamic sidecar docker volume: '{volume_name}'")
+            typer.echo(
+                "Succesfully pushed data to S3 for zombie dynamic sidecar "
+                f"docker volume: '{volume_name}'"
+            )
 
             await delete_volume(client, volume_name)
             typer.echo(f"Removed docker volume: '{volume_name}'")
